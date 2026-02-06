@@ -9,8 +9,8 @@ const meterSchema = new mongoose.Schema({
     enum: ['A', 'B', 'C', 'D', 'E'], 
     default: 'A' 
   },
-  isActive: { type: Boolean, default: true }, // For remote kill-switch
-  lastPulse: { type: Date } // Last time the meter "called home"
+  isActive: { type: Boolean, default: true }, 
+  lastPulse: { type: Date } 
 }, { timestamps: true });
 
 export const Meter = mongoose.model('Meter', meterSchema);
