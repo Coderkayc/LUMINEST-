@@ -13,4 +13,5 @@ const userSchema = new mongoose.Schema({
   meters: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Meter' }] 
 }, { timestamps: true })
 
-export const User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
+export default User;

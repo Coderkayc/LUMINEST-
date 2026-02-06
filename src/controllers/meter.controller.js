@@ -42,3 +42,31 @@ export const getMeterStats = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getDailyUsage = async (req, res) => {
+  const { meterId } = req.params;
+
+  try {
+    const dailyStats = await Usage.aggregate([
+      {
+        $match: { meterId: new mongoose.Types.ObjectId(meterId) }
+      },
+      {
+        $group: {
+          _id: {
+            $dateTrunc: { date: "$timestamp", unit: "day" }
+          },
+          totalKwh: { $sum: "$cumulativeKwh" },
+          avgVoltage: { $avg: "$voltage" }
+        }
+      },
+      {
+        $sort: { "_id": 1 }
+      }
+    ]);
+
+    res.json(dailyStats);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

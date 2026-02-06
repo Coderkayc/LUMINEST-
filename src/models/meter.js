@@ -13,4 +13,5 @@ const meterSchema = new mongoose.Schema({
   lastPulse: { type: Date } 
 }, { timestamps: true });
 
-export const Meter = mongoose.model('Meter', meterSchema);
+const Meter = mongoose.model('Meter', meterSchema);
+export default Meter;

@@ -15,4 +15,5 @@ const usageSchema = new mongoose.Schema({
   }
 });
 
-export const Usage = mongoose.model('Usage', usageSchema);
+const Usage = mongoose.model('Usage', usageSchema);
+export default Usage;
