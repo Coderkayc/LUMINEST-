@@ -1,6 +1,7 @@
 import mqtt from 'mqtt';
 import Usage from '../models/usage.js';
 import Meter from '../models/Meter.js';
+import { calculateWatts, calculateCost } from '../utils/calculations.js';
 
 export let mqttClient;
 
@@ -25,8 +26,9 @@ export const initMQTT = () => {
       if (!meter) return console.log(`⚠️ Unknown Meter: ${serialNumber}`);
 
       const usageKwh = payload.kwh || 0;
-      const rate = TARIFF_RATES[meter.tariffBand] || TARIFF_RATES['A'];
-      const cost = usageKwh * rate;
+      const watts = calculateWatts(payload.v, payload.a);
+      const cost = calculateCost(payload.kwh, meter.tariffBand);
+      meter.walletBalance -= cost;
 
       meter.walletBalance -= cost;
       if (meter.walletBalance <= 0) {
