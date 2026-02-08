@@ -34,7 +34,7 @@ export const handleWebhook = async (req, res) => {
         }
         
         await meter.save();
-        console.log(`✅ Success: ₦${nairaAmount} added to Meter ${meter.serialNumber}`);
+        console.log(`Success: ₦${nairaAmount} added to Meter ${meter.serialNumber}`);
       }
     }
 
