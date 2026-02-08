@@ -12,7 +12,7 @@ export const initMQTT = () => {
   mqttClient.on('connect', () => {
     console.log('📡 Connected to LUMINEST MQTT Broker');
     mqttClient.subscribe('luminest/meters/+/telemetry', (err) => {
-      if (!err) console.log('Subscribed to Meter Telemetry');
+      if (!err) console.log('✅ Subscribed to Meter Telemetry');
     });
   });
 
@@ -22,7 +22,7 @@ export const initMQTT = () => {
       const serialNumber = topic.split('/')[2];
 
       const meter = await Meter.findOne({ serialNumber });
-      if (!meter) return console.log(`Unknown Meter: ${serialNumber}`);
+      if (!meter) return console.log(`⚠️ Unknown Meter: ${serialNumber}`);
 
       const usageKwh = payload.kwh || 0;
       const rate = TARIFF_RATES[meter.tariffBand] || TARIFF_RATES['A'];
@@ -52,10 +52,10 @@ export const initMQTT = () => {
       meter.lastPulse = new Date();
       await meter.save();
 
-      console.log(`Meter ${serialNumber}: -₦${cost.toFixed(2)} | Balance: ₦${meter.walletBalance.toFixed(2)}`);
+      console.log(`📈 Meter ${serialNumber}: -₦${cost.toFixed(2)} | Balance: ₦${meter.walletBalance.toFixed(2)}`);
       
     } catch (error) {
-      console.error('MQTT Processing Error:', error.message);
+      console.error('❌ MQTT Processing Error:', error.message);
     }
   });
 };
