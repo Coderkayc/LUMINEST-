@@ -21,7 +21,6 @@ The backend is built to handle high-frequency energy data from smart meters usin
 * **Payments:** Paystack API
 
 ## 📁 Project Structure
-```text
 src/
 ├── config/             # Database and MQTT configurations
 ├── controllers/        # Request handlers (Auth, Meter, Control, Usage)
