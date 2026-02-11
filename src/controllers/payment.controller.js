@@ -2,9 +2,31 @@ import crypto from 'crypto';
 import Meter from '../models/Meter.js';
 
 export const initializePayment = async (req, res) => {
-  const { amount, meterId } = req.body;
-  
-  res.json({ message: "Payment initialization logic goes here" });
+  try {
+    const { amount, meterId, serialNumber } = req.body;
+    const userId = req.user.id; 
+
+    const reference = `LUM-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    const paystackResponse = { 
+      data: { authorization_url: "https://checkout.paystack.com/xyz", reference } 
+    }; 
+
+    const newTransaction = await Transaction.create({
+      user: userId,
+      meterId,
+      serialNumber,
+      amount,
+      reference,
+      status: 'pending'
+    });
+
+    res.status(200).json({
+      success: true,
+      data: paystackResponse.data.authorization_url
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
 
 export const handleWebhook = async (req, res) => {
@@ -44,3 +66,28 @@ export const handleWebhook = async (req, res) => {
     res.sendStatus(500);
   }
 };
+
+export const getPaymentHistory = async (req, res) => {
+  try {
+    const { serialNumber } = req.body;
+    const userId = req.user.id;
+
+    let filter = { user: userId };
+    if (serialNumber) {
+      filter.serialNumber = serialNumber;
+    }
+
+    const history = await Transaction.find(filter).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: history.length,
+      data: history
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+

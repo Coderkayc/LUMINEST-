@@ -35,9 +35,16 @@ export const getMeterStats = async (req, res) => {
       owner: req.user._id 
     });
 
-    if (!meter) return res.status(404).json({ message: 'Meter not found' });
+    if (!meter) 
+      return res.status(404).json({ message: 'Meter not found' });
 
-    res.json(meter);
+    res.status(200).json({
+      serialNumber: meter.serialNumber,
+      walletBalance: meter.walletBalance,
+      isActive: meter.isActive,
+      tariffBand: meter.tariffBand,
+      lastPulse: meter.lastPulse
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -66,6 +73,26 @@ export const getDailyUsage = async (req, res) => {
     ]);
 
     res.json(dailyStats);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getAllUserMeters = async (req, res) => {
+  try {
+
+    const meters = await Meter.find({ owner: req.user._id });
+
+    res.status(200).json({
+      count: meters.length,
+      meters: meters.map(meter => ({
+        id: meter._id,
+        serialNumber: meter.serialNumber,
+        walletBalance: meter.walletBalance,
+        isActive: meter.isActive,
+        tariffBand: meter.tariffBand
+      }))
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
