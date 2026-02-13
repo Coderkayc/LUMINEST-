@@ -1,6 +1,6 @@
 # ⚡ LUMINEST AFRICA Backend
 
-LUMINEST AFRICA is a technology platform designed to provide African households—starting with Nigeria—clear visibility, control, and smarter management of their electricity usage. This repository contains the core API and IoT ingestion engine..
+LUMINEST AFRICA is a technology platform designed to provide African households—starting with Nigeria—clear visibility, control, and smarter management of their electricity usage. This repository contains the core API and IoT ingestion engine.
 
 ## 🚀 Project Overview
 The backend is built to handle high-frequency energy data from smart meters using a combination of RESTful APIs for user interaction and MQTT for hardware communication.

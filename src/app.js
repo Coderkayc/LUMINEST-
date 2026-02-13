@@ -3,6 +3,7 @@ import cors from 'cors';
 import apiRoutes from './routes/index.js';
 import errorHandler, { notFound } from './middleware/error.middlerware.js';
 
+
 const app = express();
 
 app.use(cors());
